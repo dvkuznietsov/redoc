@@ -1,24 +1,16 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import {
-  ClickablePropertyNameCell,
-  PropertyLabel,
-  RequiredLabel,
-} from '../../common-elements/fields';
 import { FieldDetails } from './FieldDetails';
-import {
-  InnerPropertiesWrap,
-  PropertyBullet,
-  PropertyCellWithInner,
-  PropertyDetailsCell,
-  PropertyNameCell,
-} from '../../common-elements/fields-layout';
 import { ShelfIcon } from '../../common-elements/';
 import { Schema } from '../Schema/Schema';
 
 import type { SchemaOptions } from '../Schema/Schema';
 import type { FieldModel } from '../../services/models';
+
+import classNames from 'classnames';
+
+import './Fields.css';
 
 export interface FieldProps extends SchemaOptions {
   className?: string;
@@ -57,59 +49,71 @@ export class Field extends React.Component<FieldProps> {
 
     const labels = (
       <>
-        {kind === 'additionalProperties' && <PropertyLabel>additional property</PropertyLabel>}
-        {kind === 'patternProperties' && <PropertyLabel>pattern property</PropertyLabel>}
-        {required && <RequiredLabel>required</RequiredLabel>}
+        {kind === 'additionalProperties' && (
+          <span className="text secondary">additional property</span>
+        )}
+        {kind === 'patternProperties' && <span className="text secondary">pattern property</span>}
+        {required && <span className="text secondary">required</span>}
+        <span>
+          {field.schema.typePrefix && (
+            <span className="text secondary">{field.schema.typePrefix}</span>
+          )}
+          <span className="text secondary">{field.schema.displayType}</span>
+        </span>
+        {field.schema.displayFormat && (
+          <span className="text secondary">{field.schema.displayFormat}</span>
+        )}
+        {field.schema.contentEncoding && (
+          <span className="text secondary">{field.schema.contentEncoding}</span>
+        )}
+        {field.schema.contentMediaType && (
+          <span className="text secondary">{field.schema.contentMediaType}</span>
+        )}
       </>
     );
 
+    const availability = field.schema.rawSchema['x-databricks-availability'];
+
     const paramName = withSubSchema ? (
-      <ClickablePropertyNameCell
-        className={deprecated ? 'deprecated' : ''}
-        kind={kind}
-        title={name}
-      >
-        <PropertyBullet />
-        <button
+      <div className={classNames('property-name-cell', 'clickable-property-name-cell')}>
+        <label
           onClick={this.toggle}
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          <span className="property-name">{name}</span>
+          <span className="text code">{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
-        </button>
+        </label>
         {labels}
-      </ClickablePropertyNameCell>
+        {availability && <span className="text info">{availability} preview</span>}
+      </div>
     ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-        <PropertyBullet />
-        <span className="property-name">{name}</span>
+      <div className={classNames(deprecated ? 'deprecated' : undefined, 'property-name-cell')}>
+        <span className="text code">{name}</span>
         {labels}
-      </PropertyNameCell>
+      </div>
     );
 
     return (
       <>
-        <tr className={isLast ? 'last ' + className : className}>
+        <div
+          className={classNames(isLast ? 'last ' + className : className, 'properies-row', {
+            'properies-row-show-border': !(expanded && withSubSchema),
+          })}
+        >
           {paramName}
-          <PropertyDetailsCell>
-            <FieldDetails {...this.props} />
-          </PropertyDetailsCell>
-        </tr>
+          <FieldDetails {...this.props} />
+        </div>
         {expanded && withSubSchema && (
-          <tr key={field.name + 'inner'}>
-            <PropertyCellWithInner colSpan={2}>
-              <InnerPropertiesWrap>
-                <Schema
-                  schema={field.schema}
-                  skipReadOnly={this.props.skipReadOnly}
-                  skipWriteOnly={this.props.skipWriteOnly}
-                  showTitle={this.props.showTitle}
-                  level={this.props.level}
-                />
-              </InnerPropertiesWrap>
-            </PropertyCellWithInner>
-          </tr>
+          <div className="nested-row">
+            <Schema
+              schema={field.schema}
+              skipReadOnly={this.props.skipReadOnly}
+              skipWriteOnly={this.props.skipWriteOnly}
+              showTitle={this.props.showTitle}
+              level={this.props.level}
+            />
+          </div>
         )}
       </>
     );

@@ -14,6 +14,7 @@ export interface JsonProps {
 }
 
 const JsonViewerWrap = styled.div`
+  position: relative;
   &:hover > ${SampleControls} {
     opacity: 1;
   }

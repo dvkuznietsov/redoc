@@ -659,6 +659,7 @@ export function isRedocExtension(key: string): boolean {
     'x-nullable': true,
     'x-servers': true,
     'x-tagGroups': true,
+    'x-databricks-groups': true,
     'x-traitTag': true,
     'x-additionalPropertiesName': true,
     'x-explicitMappingOnly': true,

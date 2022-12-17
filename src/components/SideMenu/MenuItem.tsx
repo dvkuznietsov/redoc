@@ -5,7 +5,13 @@ import { ShelfIcon } from '../../common-elements/shelfs';
 import { OperationModel } from '../../services';
 import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
-import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
+import {
+  MenuItemLabel,
+  MenuItemLi,
+  MenuItemTitle,
+  MenuItemTitleText,
+  OperationBadge,
+} from './styled.elements';
 import { l } from '../../services/Labels';
 import { scrollIntoViewIfNeeded } from '../../utils';
 import { OptionsContext } from '../OptionsProvider';
@@ -16,6 +22,7 @@ export interface MenuItemProps {
   onActivate?: (item: IMenuItem) => void;
   withoutChildren?: boolean;
   children?: React.ReactChild;
+  isSearch?: boolean;
 }
 
 @observer
@@ -49,12 +56,12 @@ export class MenuItem extends React.Component<MenuItemProps> {
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.sidebarLabel}>
+            <MenuItemTitle title={item.sidebarLabel} level={item.depth}>
               {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>
             {(item.depth > 0 && item.items.length > 0 && (
-              <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
+              <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} size="14px" />
             )) ||
               null}
           </MenuItemLabel>
@@ -74,6 +81,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
 export interface OperationMenuItemContentProps {
   item: OperationModel;
   children?: React.ReactChild;
+  isSearch?: boolean;
 }
 
 export const OperationMenuItemContent = observer((props: OperationMenuItemContentProps) => {
@@ -89,16 +97,21 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
 
   return (
     <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated} ref={ref}>
-      {item.isWebhook ? (
-        <OperationBadge type="hook">
-          {showWebhookVerb ? item.httpVerb : l('webhook')}
-        </OperationBadge>
-      ) : (
-        <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
-      )}
-      <MenuItemTitle width="calc(100% - 38px)">
-        {item.sidebarLabel}
-        {props.children}
+      <MenuItemTitle level={item.depth}>
+        {props.isSearch &&
+          (item.isWebhook ? (
+            <OperationBadge type="hook" level={item.depth}>
+              {showWebhookVerb ? item.httpVerb : l('webhook')}
+            </OperationBadge>
+          ) : (
+            <OperationBadge type={item.httpVerb} level={item.depth}>
+              {shortenHTTPVerb(item.httpVerb)}
+            </OperationBadge>
+          ))}
+        <MenuItemTitleText>
+          {item.sidebarLabel}
+          {props.children}
+        </MenuItemTitleText>
       </MenuItemTitle>
     </MenuItemLabel>
   );

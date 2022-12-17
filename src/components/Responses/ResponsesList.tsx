@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { l } from '../../services/Labels';
 import { ResponseModel } from '../../services/models';
-import styled from '../../styled-components';
+import styled, { extensionsHook } from '../../styled-components';
 import { ResponseView } from './Response';
 
 const ResponsesHeader = styled.h3`
@@ -10,6 +10,8 @@ const ResponsesHeader = styled.h3`
   margin: 3em 0 1.1em;
   color: ${({ theme }) => theme.colors.text.primary};
   font-weight: normal;
+
+  ${extensionsHook('UnderlinedHeader')};
 `;
 
 export interface ResponseListProps {

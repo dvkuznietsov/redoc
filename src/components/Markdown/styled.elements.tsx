@@ -83,7 +83,7 @@ export const StyledMarkdownBlock = styled(
     font-family: ${props => props.theme.typography.code.fontFamily};
     white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: ${({ theme }) => theme.codeBlock.backgroundColor};
-    color: white;
+    color: ${({ theme }) => theme.typography.code.color};
     padding: ${props => props.theme.spacing.unit * 4}px;
     overflow-x: auto;
     line-height: normal;
@@ -92,7 +92,7 @@ export const StyledMarkdownBlock = styled(
 
     code {
       background-color: transparent;
-      color: white;
+      color: ${({ theme }) => theme.typography.code.color};
       padding: 0;
 
       &:before,

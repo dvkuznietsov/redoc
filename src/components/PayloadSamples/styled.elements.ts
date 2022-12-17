@@ -4,7 +4,8 @@ import { Dropdown } from '../../common-elements/Dropdown';
 
 export const MimeLabel = styled.div`
   padding: 0.9em;
-  background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
+  background-color: #e4ecf1;
+  border-radiues: 4px;
   margin: 0 0 10px 0;
   display: block;
   font-family: ${({ theme }) => theme.typography.headings.fontFamily};
@@ -40,14 +41,13 @@ export const InvertedSimpleDropdown = styled(Dropdown)`
   margin: 0 0 10px 0;
   display: block;
   background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
-  border: none;
+  border: 1px solid ${({ theme }) => theme.codeBlock.borderColor};
+  border-radius: 4px;
   padding: 0.9em 1.6em 0.9em 0.9em;
-  box-shadow: none;
   &:hover,
   &:focus-within {
-    border: none;
-    box-shadow: none;
     background-color: ${({ theme }) => transparentize(0.3, theme.rightPanel.backgroundColor)};
+    border: 1px solid rgb(34, 114, 180);
   }
 `;
 

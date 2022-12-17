@@ -4,9 +4,9 @@ import { darken } from 'polished';
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
 import styled, { css, media, ResolvedThemeInterface } from '../../styled-components';
 
-export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
+export const OperationBadge = styled.span.attrs((props: { type: string; level?: number }) => ({
   className: `operation-type ${props.type}`,
-}))<{ type: string }>`
+}))<{ type: string; level?: number }>`
   width: 9ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
@@ -22,9 +22,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   text-align: center;
   font-weight: bold;
   vertical-align: middle;
-  margin-right: 6px;
-  margin-top: 2px;
-
+  margin-right: 4px;
   &.get {
     background-color: ${props => props.theme.colors.http.get};
   }
@@ -89,7 +87,8 @@ export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   }
 
   & & {
-    font-size: 0.929em;
+    font-size: 14px;
+    line-height: 1.25em;
   }
 
   ${props => (props.expanded ? '' : 'display: none;')};
@@ -100,19 +99,21 @@ export const MenuItemLi = styled.li<{ depth: number }>`
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0;
-  ${props => (props.depth === 0 ? 'margin-top: 15px' : '')};
+  box-sizing: border-box;
 `;
 
 export const menuItemDepth = {
   0: css`
-    opacity: 0.7;
     text-transform: ${({ theme }) => theme.sidebar.groupItems.textTransform};
-    font-size: 0.8em;
-    padding-bottom: 0;
+    font-size: 14px;
+    line-height: 1.25em;
+    font-weight: 400;
     cursor: default;
   `,
   1: css`
-    font-size: 0.929em;
+    font-size: 14px;
+    line-height: 1.25em;
+    font-weight: 400;
     text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
   `,
 };
@@ -136,7 +137,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
       ? menuItemActive(props.depth, props, 'activeTextColor')
       : props.theme.sidebar.textColor};
   margin: 0;
-  padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
+  padding: 6px 16px;
   ${({ depth, type, theme }) =>
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
@@ -162,14 +163,19 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
       fill: ${({ theme }) => theme.sidebar.arrow.color};
     }
   }
+  box-sizing: border-box;
 `;
 
-export const MenuItemTitle = styled.span<{ width?: string }>`
+export const MenuItemTitle = styled.span<{ width?: string; level?: number }>`
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding-left: ${props => props.level ?? 0}em;
+  min-width: 0;
+`;
+
+export const MenuItemTitleText = styled.span`
+  word-break: break-all;
 `;
 
 export const RedocAttribution = styled.div`

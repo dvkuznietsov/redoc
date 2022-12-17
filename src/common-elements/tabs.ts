@@ -24,15 +24,16 @@ export const Tabs = styled(ReactTabs)`
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
       margin: 0
         ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
-      border: 1px solid ${({ theme }) => darken(0.05, theme.codeBlock.backgroundColor)};
+      margin-bottom: ${({ theme }) => `${2 * theme.spacing.unit}px;`}
+        border: 1px solid ${({ theme }) => darken(0.05, theme.codeBlock.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
       font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: ${props => props.theme.colors.text.primary};
-        background: ${({ theme }) => theme.rightPanel.textColor};
+        color: white;
+        background: rgb(34, 114, 180);
         &:focus {
           outline: auto;
         }
@@ -71,6 +72,11 @@ export const Tabs = styled(ReactTabs)`
     & > div > pre {
       padding: 0;
     }
+  }
+
+  > .react-tabs__tab-panel--selected {
+    border: 1px solid ${({ theme }) => theme.codeBlock.borderColor};
+    border-radius: 4px;
   }
 `;
 

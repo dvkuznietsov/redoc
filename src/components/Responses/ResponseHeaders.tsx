@@ -19,11 +19,11 @@ export class ResponseHeaders extends React.PureComponent<ResponseHeadersProps> {
     return (
       <PropertiesTable>
         <HeadersCaption> Response Headers </HeadersCaption>
-        <tbody>
+        <div>
           {mapWithLast(headers, (header, isLast) => (
             <Field isLast={isLast} key={header.name} field={header} showExamples={true} />
           ))}
-        </tbody>
+        </div>
       </PropertiesTable>
     );
   }

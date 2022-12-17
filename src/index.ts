@@ -6,6 +6,7 @@ export {
   Section,
   Dropdown,
   SimpleDropdown,
+  DarkRightPanel,
 } from './common-elements/';
 export type { DropdownOption } from './common-elements';
 export type { OpenAPIEncoding } from './types';

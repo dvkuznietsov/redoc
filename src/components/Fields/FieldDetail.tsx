@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExampleValue, FieldLabel } from '../../common-elements/fields';
+import { ExampleValue } from '../../common-elements/fields';
 
 export interface FieldDetailProps {
   value?: any;
@@ -16,7 +16,10 @@ function FieldDetailComponent({ value, label, raw }: FieldDetailProps) {
 
   return (
     <div>
-      <FieldLabel> {label} </FieldLabel> <ExampleValue>{stringifyValue}</ExampleValue>
+      <span className="text info" color="info">
+        {label}
+      </span>{' '}
+      <ExampleValue>{stringifyValue}</ExampleValue>
     </div>
   );
 }

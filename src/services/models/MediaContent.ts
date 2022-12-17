@@ -53,6 +53,11 @@ export class MediaContentModel {
   }
 
   get hasSample(): boolean {
-    return this.mediaTypes.filter(mime => !!mime.examples).length > 0;
+    return (
+      this.mediaTypes.filter(
+        mime =>
+          !!mime.examples && Object.values(mime.examples).some(e => Object.keys(e.value).length),
+      ).length > 0
+    );
   }
 }

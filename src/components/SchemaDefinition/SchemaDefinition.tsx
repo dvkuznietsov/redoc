@@ -93,6 +93,8 @@ const MediaSamplesWrap = styled.div`
     padding: ${props => props.theme.spacing.unit * 4}px;
     margin: 0;
   }
+  border: 1px solid ${({ theme }) => theme.codeBlock.borderColor};
+  border-radius: 4px;
 
   & > div > pre {
     padding: 0;

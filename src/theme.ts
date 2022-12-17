@@ -373,6 +373,7 @@ export interface ResolvedThemeInterface {
   };
   codeBlock: {
     backgroundColor: string;
+    borderColor: string;
   };
   fab: {
     backgroundColor: string;

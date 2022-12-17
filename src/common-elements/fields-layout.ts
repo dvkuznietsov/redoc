@@ -8,53 +8,14 @@ export const PropertiesTableCaption = styled.caption`
   color: ${props => props.theme.colors.text.secondary};
 `;
 
-export const PropertyCell = styled.td<{ kind?: string }>`
-  border-left: 1px solid ${props => props.theme.schema.linesColor};
+export const PropertyCell = styled.div<{ kind?: string }>`
   box-sizing: border-box;
   position: relative;
-  padding: 10px 10px 10px 0;
 
   ${media.lessThan('small')`
     display: block;
     overflow: hidden;
   `}
-
-  tr:first-of-type > &,
-  tr.last > & {
-    border-left-width: 0;
-    background-position: top left;
-    background-repeat: no-repeat;
-    background-size: 1px 100%;
-  }
-
-  tr:first-of-type > & {
-    background-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 22px,
-      ${props => props.theme.schema.linesColor} 22px,
-      ${props => props.theme.schema.linesColor} 100%
-    );
-  }
-
-  tr.last > & {
-    background-image: linear-gradient(
-      to bottom,
-      ${props => props.theme.schema.linesColor} 0%,
-      ${props => props.theme.schema.linesColor} 22px,
-      transparent 22px,
-      transparent 100%
-    );
-  }
-
-  tr.last + tr > & {
-    border-left-color: transparent;
-  }
-
-  tr.last:first-child > & {
-    background: none;
-    border-left-color: transparent;
-  }
 `;
 
 export const PropertyCellWithInner = styled(PropertyCell)`

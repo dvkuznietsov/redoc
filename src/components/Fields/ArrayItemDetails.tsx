@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TypeFormat, TypePrefix } from '../../common-elements/fields';
+import { TypePrefix } from '../../common-elements/fields';
 import { ConstraintsView } from './FieldContstraints';
 import { Pattern } from './Pattern';
 import { SchemaModel } from '../../services';
@@ -22,7 +22,7 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
   return (
     <Wrapper>
       [ items
-      {schema.displayFormat && <TypeFormat> &lt;{schema.displayFormat} &gt;</TypeFormat>}
+      {schema.displayFormat && <span className="text secondary">{schema.displayFormat}</span>}
       <ConstraintsView constraints={schema.constraints} />
       <Pattern schema={schema} />
       {schema.items && <ArrayItemDetails schema={schema.items} />} ]

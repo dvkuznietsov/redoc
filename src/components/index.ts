@@ -10,8 +10,16 @@ export * from './Operation/Operation';
 export * from './Loading/Loading';
 export * from './JsonViewer';
 export * from './Markdown/Markdown';
+export * from './Markdown/AdvancedMarkdown';
 export { StyledMarkdownBlock } from './Markdown/styled.elements';
 export * from './SecuritySchemes/SecuritySchemes';
+export * from './Endpoint/Endpoint';
+export * from './ExternalDocumentation/ExternalDocumentation';
+export * from './Fields/Extensions';
+export * from './SecurityRequirement/SecurityRequirement';
+export * from './Callbacks/CallbacksList';
+export * from './RequestSamples/RequestSamples';
+export * from './CallbackSamples/CallbackSamples';
 
 export * from './Responses/Response';
 export * from './Responses/ResponseDetails';

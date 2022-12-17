@@ -1,13 +1,53 @@
 import { marked } from 'marked';
 
 import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
+import { jsonToHTML } from '../utils/jsonToHtml';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 import type { MarkdownHeading, MDXComponentMeta } from './types';
 
-const renderer = new marked.Renderer();
+const defaultRenderer = new marked.Renderer();
 
+const renderer = {
+  code(code, infostring, escaped) {
+    // in the case that the spec contains malformed json, default to the deafult renderer that can handle it
+    try {
+      return jsonToHTML(JSON.parse(code), 100 /* this param doesn't matter */);
+    } catch (e) {}
+    return defaultRenderer.code(code, infostring, escaped);
+  },
+};
+
+// extension to provide parsing rule for  ":method:" and ":schema:" prefixes to render them as a link
+const methodLink = {
+  name: 'methodLink',
+  level: 'inline',
+  start(src) {
+    return src.match(/:/)?.index;
+  },
+  tokenizer(src) {
+    const link = /^:(method|schema):([a-zA-Z0-9]*)/;
+    const match = link.exec(src);
+    if (match) {
+      return {
+        type: 'methodLink',
+        raw: match[0],
+        dt: this.lexer.inlineTokens(match[1].trim()),
+        dd: this.lexer.inlineTokens(match[2].trim()),
+      };
+    }
+  },
+  renderer(token) {
+    // the last string in the path should be displayed
+    const displayText = this.parser.parseInline(token.dd).split('/').pop();
+    return `<a href="" data-id="markdown-link" data-url-entity="${this.parser.parseInline(
+      token.dt,
+    )}" data-url="${this.parser.parseInline(token.dd)}">${displayText}</a>`;
+  },
+  childTokens: ['dt', 'dd'],
+};
+
+marked.use({ renderer, extensions: [methodLink] });
 marked.setOptions({
-  renderer,
   highlight: (str, lang) => {
     return highlight(str, lang);
   },

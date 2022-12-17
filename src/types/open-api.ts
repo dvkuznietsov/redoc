@@ -277,6 +277,8 @@ export interface OpenAPITag {
   description?: string;
   externalDocs?: OpenAPIExternalDocumentation;
   'x-displayName'?: string;
+  'x-databricks-package'?: string;
+  'x-databricks-service'?: string;
 }
 
 export interface OpenAPIExternalDocumentation {

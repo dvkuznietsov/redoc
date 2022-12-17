@@ -6,6 +6,7 @@ import { OperationModel } from '../../services/models';
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { l } from '../../services/Labels';
+import { OptionsContext } from '../OptionsProvider';
 
 export interface ResponseSamplesProps {
   operation: OperationModel;
@@ -14,12 +15,14 @@ export interface ResponseSamplesProps {
 @observer
 export class ResponseSamples extends React.Component<ResponseSamplesProps> {
   operation: OperationModel;
+  static contextType = OptionsContext;
 
   render() {
     const { operation } = this.props;
     const responses = operation.responses.filter(response => {
       return response.content && response.content.hasSample;
     });
+    const hideTabList = responses.length === 1 ? this.context.hideSingleRequestSampleTab : false;
 
     return (
       (responses.length > 0 && (
@@ -27,11 +30,9 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
           <RightPanelHeader> {l('responseSamples')} </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
-            <TabList>
+            <TabList hidden={hideTabList}>
               {responses.map(response => (
-                <Tab className={'tab-' + response.type} key={response.code}>
-                  {response.code}
-                </Tab>
+                <Tab key={response.code}>{response.code}</Tab>
               ))}
             </TabList>
             {responses.map(response => (

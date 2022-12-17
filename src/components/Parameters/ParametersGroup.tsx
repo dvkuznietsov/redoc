@@ -19,16 +19,15 @@ export class ParametersGroup extends React.PureComponent<ParametersGroupProps, a
     if (!parameters || !parameters.length) {
       return null;
     }
-
     return (
       <div key={place}>
         <UnderlinedHeader>{place} Parameters</UnderlinedHeader>
         <PropertiesTable>
-          <tbody>
+          <div>
             {mapWithLast(parameters, (field, isLast) => (
               <Field key={field.name} isLast={isLast} field={field} showExamples={true} />
             ))}
-          </tbody>
+          </div>
         </PropertiesTable>
       </div>
     );

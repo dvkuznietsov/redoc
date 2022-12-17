@@ -1,8 +1,9 @@
 import * as React from 'react';
+import styled from 'styled-components';
 
 import { MarkdownRenderer } from '../../services';
 import { SanitizedMarkdownHTML } from './SanitizedMdBlock';
-
+import { jsonStyles } from '../JsonViewer/style';
 export interface StylingMarkdownProps {
   compact?: boolean;
   inline?: boolean;
@@ -20,7 +21,7 @@ export type MarkdownProps = BaseMarkdownProps &
     'data-role'?: string;
   };
 
-export class Markdown extends React.Component<MarkdownProps> {
+export class MarkdownUnstyled extends React.Component<MarkdownProps> {
   render() {
     const { source, inline, compact, className, 'data-role': dataRole } = this.props;
     const renderer = new MarkdownRenderer();
@@ -35,3 +36,20 @@ export class Markdown extends React.Component<MarkdownProps> {
     );
   }
 }
+
+export const Markdown = styled(MarkdownUnstyled)`
+  .redoc-json {
+    ${jsonStyles};
+    .collapser {
+      display: none;
+      pointer-events: none;
+    }
+    code {
+      border: none;
+      background: none;
+    }
+    padding: 10px;
+    border: 1px solid ${props => props.theme.codeBlock.borderColor};
+    border-radius: 4px;
+  }
+`;

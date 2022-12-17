@@ -28,6 +28,8 @@ export class GroupModel implements IMenuItem {
 
   depth: number;
   level: number;
+  terraformLink?: string;
+  availability?: string;
   //#endregion
 
   constructor(
@@ -42,6 +44,14 @@ export class GroupModel implements IMenuItem {
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.level = (tagOrGroup as MarkdownHeading).level || 1;
+
+    this.terraformLink =
+      tagOrGroup['x-databricks-terraform-resource'] &&
+      `https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/${tagOrGroup[
+        'x-databricks-terraform-resource'
+      ].replace(/^databricks_/, '')}`;
+
+    this.availability = tagOrGroup['x-databricks-availability'];
 
     this.sidebarLabel = this.name;
 

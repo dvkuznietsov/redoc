@@ -6,6 +6,7 @@ export const jsonStyles = css`
     pointer-events: none;
   }
 
+  background-color: ${props => props.theme.codeBlock.backgroundColor};
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: ${props => props.theme.typography.code.fontSize};
 
@@ -50,7 +51,7 @@ export const jsonStyles = css`
   .collapser {
     background-color: transparent;
     border: 0;
-    color: #fff;
+    color: #000;
     font-family: ${props => props.theme.typography.code.fontFamily};
     font-size: ${props => props.theme.typography.code.fontSize};
     padding-right: 6px;

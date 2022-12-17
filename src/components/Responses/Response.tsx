@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import type { ResponseModel, MediaTypeModel } from '../../services/models';
+import type { ResponseModel, MediaTypeModel, SchemaModel } from '../../services/models';
 import { ResponseDetails } from './ResponseDetails';
 import { ResponseDetailsWrap, StyledResponseTitle } from './styled.elements';
 
@@ -9,12 +9,18 @@ export interface ResponseViewProps {
   response: ResponseModel;
 }
 
+const isEmptySchema = (schema: SchemaModel) => !schema.fields?.length && !schema.items;
+
 export const ResponseView = observer(({ response }: ResponseViewProps): React.ReactElement => {
   const { extensions, headers, type, summary, description, code, expanded, content } = response;
 
   const mimes = React.useMemo<MediaTypeModel[]>(
     () =>
-      content === undefined ? [] : content.mediaTypes.filter(mime => mime.schema !== undefined),
+      content === undefined
+        ? []
+        : content.mediaTypes.filter(
+            mime => mime.schema !== undefined && !isEmptySchema(mime.schema),
+          ),
     [content],
   );
 

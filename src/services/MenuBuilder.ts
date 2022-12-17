@@ -21,9 +21,15 @@ export class MenuBuilder {
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(parser, spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
-    if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
+    if (spec['x-databricks-groups'] && spec['x-databricks-groups'].length > 0) {
       items.push(
-        ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
+        ...MenuBuilder.getTagGroupsItems(
+          parser,
+          undefined,
+          spec['x-databricks-groups'],
+          tagsMap,
+          options,
+        ),
       );
     } else {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
@@ -66,8 +72,8 @@ export class MenuBuilder {
   }
 
   /**
-   * Returns array of OperationsGroup items for the tag groups (x-tagGroups vendor extension)
-   * @param tags value of `x-tagGroups` vendor extension
+   * Returns array of OperationsGroup items for the tag groups (x-databricks-groups vendor extension)
+   * @param tags value of `x-databricks-groups` vendor extension
    */
   static getTagGroupsItems(
     parser: OpenAPIParser,

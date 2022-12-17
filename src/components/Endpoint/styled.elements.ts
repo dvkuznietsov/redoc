@@ -1,7 +1,6 @@
 import styled from '../../styled-components';
 
 export const OperationEndpointWrap = styled.div`
-  cursor: pointer;
   position: relative;
   margin-bottom: 5px;
 `;
@@ -14,21 +13,18 @@ export const ServerRelativeURL = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const EndpointInfo = styled.button<{ expanded?: boolean; inverted?: boolean }>`
+export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean }>`
   outline: 0;
   color: inherit;
   width: 100%;
   text-align: left;
-  cursor: pointer;
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
-  border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props =>
-    props.inverted ? 'transparent' : props.theme.codeBlock.backgroundColor};
+  border-radius: ${props => (props.inverted ? '0' : '4px')};
+  background-color: ${props => props.theme.codeBlock.backgroundColor};
   display: flex;
   white-space: nowrap;
   align-items: center;
-  border: ${props => (props.inverted ? '0' : '1px solid transparent')};
-  border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
+  border: ${props => (props.inverted ? '0' : `1px solid ${props.theme.codeBlock.borderColor}`)};
   transition: border-color 0.25s ease;
 
   ${props =>
@@ -36,9 +32,6 @@ export const EndpointInfo = styled.button<{ expanded?: boolean; inverted?: boole
 
   .${ServerRelativeURL} {
     color: ${props => (props.inverted ? props.theme.colors.text.primary : '#ffffff')};
-  }
-  &:focus {
-    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.45), 0 2px 0 rgba(128, 128, 128, 0.25);
   }
 `;
 
@@ -62,12 +55,12 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
   background: ${props => props.theme.rightPanel.servers.overlay.backgroundColor};
   color: ${props => props.theme.rightPanel.servers.overlay.textColor};
   box-sizing: border-box;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.33);
   overflow: hidden;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   transition: all 0.25s ease;
   visibility: hidden;
+  border: 1px solid ${props => props.theme.codeBlock.borderColor};
   ${props => (props.expanded ? 'visibility: visible;' : 'transform: translateY(-50%) scaleY(0);')}
 `;
 

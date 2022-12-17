@@ -48,8 +48,12 @@ export const PrismDiv = styled.div`
     color: hsl(30, 20%, 50%);
   }
 
+  .token {
+    font-weight: 600;
+  }
+
   .token.punctuation {
-    opacity: 0.7;
+    color: #a3acb9;
   }
 
   .namespace {
@@ -61,11 +65,11 @@ export const PrismDiv = styled.div`
   .token.number,
   .token.constant,
   .token.symbol {
-    color: #4a8bb3;
+    color: #e56f4a;
   }
 
   .token.boolean {
-    color: #e64441;
+    color: #3a97d4;
   }
 
   .token.selector,
@@ -74,16 +78,16 @@ export const PrismDiv = styled.div`
   .token.char,
   .token.builtin,
   .token.inserted {
-    color: #a0fbaa;
+    color: #09825d;
     & + a,
     & + a:visited {
-      color: #4ed2ba;
+      color: #3a97d4;
       text-decoration: underline;
     }
   }
 
   .token.property.string {
-    color: white;
+    color: #697386;
   }
 
   .token.operator,

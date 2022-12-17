@@ -50,7 +50,7 @@ export const ObjectSchema = observer(
     return (
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
-        <tbody>
+        <div>
           {mapWithLast(filteredFields, (field, isLast) => {
             return (
               <Field
@@ -77,7 +77,7 @@ export const ObjectSchema = observer(
               />
             );
           })}
-        </tbody>
+        </div>
       </PropertiesTable>
     );
   },

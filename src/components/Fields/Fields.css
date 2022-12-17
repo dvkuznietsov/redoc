@@ -1,0 +1,52 @@
+.properies-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+
+.properies-row-show-border {
+  border-bottom: 1px solid rgb(205, 218, 229);
+}
+
+.properies-row:last-of-type {
+  border-bottom: 0px;
+}
+
+.nested-row {
+  padding: 15px;
+  border: 1px solid rgb(205, 218, 229);
+  border-radius: 4px;
+  background: #f7fafc;
+}
+
+.property-name-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  vertical-align: top;
+  line-height: 20px;
+  white-space: nowrap;
+  position: relative;
+}
+
+.clickable-property-name-cell {
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.fields-secondary:empty {
+  display: none;
+}
+
+.cloud-icon {
+  width: 22px;
+  height: 22px;
+  left: -26px;
+  cursor: default;
+  object-fit: contain;
+}

@@ -1,4 +1,4 @@
-import styled from '../styled-components';
+import styled, { extensionsHook } from '../styled-components';
 import { PrismDiv } from './PrismDiv';
 
 export const SampleControls = styled.div`
@@ -24,6 +24,8 @@ export const SampleControls = styled.div`
       background: rgba(255, 255, 255, 0.1);
     }
   }
+
+  ${extensionsHook('SampleControls')}
 `;
 
 export const SampleControlsWrap = styled.div`

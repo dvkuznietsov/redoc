@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import {
-  RecursiveLabel,
-  TypeFormat,
-  TypeName,
-  TypePrefix,
-  TypeTitle,
-} from '../../common-elements/fields';
+import { RecursiveLabel, TypeTitle } from '../../common-elements/fields';
 import { getSerializedValue } from '../../utils';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
@@ -53,34 +47,8 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
   }, [field, showExamples]);
 
   return (
-    <div>
-      <div>
-        <TypePrefix>{schema.typePrefix}</TypePrefix>
-        <TypeName>{schema.displayType}</TypeName>
-        {schema.displayFormat && (
-          <TypeFormat>
-            {' '}
-            &lt;
-            {schema.displayFormat}
-            &gt;{' '}
-          </TypeFormat>
-        )}
-        {schema.contentEncoding && (
-          <TypeFormat>
-            {' '}
-            &lt;
-            {schema.contentEncoding}
-            &gt;{' '}
-          </TypeFormat>
-        )}
-        {schema.contentMediaType && (
-          <TypeFormat>
-            {' '}
-            &lt;
-            {schema.contentMediaType}
-            &gt;{' '}
-          </TypeFormat>
-        )}
+    <>
+      <div className="fields-secondary">
         {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
         <ConstraintsView constraints={schema.constraints} />
         <Pattern schema={schema} />
@@ -92,10 +60,10 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
           <Badge type="warning"> {l('deprecated')} </Badge>
         </div>
       )}
-      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
-      {!renderDiscriminatorSwitch && (
-        <EnumValues isArrayType={isArrayType} values={schema.enum} />
-      )}{' '}
+      {schema.default && (
+        <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
+      )}
+      {!renderDiscriminatorSwitch && <EnumValues isArrayType={isArrayType} values={schema.enum} />}{' '}
       {renderedExamples}
       <Extensions extensions={{ ...extensions, ...schema.extensions }} />
       <div>
@@ -106,7 +74,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       )}
       {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(props)) || null}
       {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
-    </div>
+    </>
   );
 });
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExampleValue, FieldLabel } from '../../common-elements/fields';
+import { ExampleValue } from '../../common-elements/fields';
 
 import { l } from '../../services/Labels';
 import { OptionsContext } from '../OptionsProvider';
@@ -53,11 +53,11 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
       : '';
 
     return (
-      <div>
-        <FieldLabel>
+      <div className="enum-values-wrap">
+        <span className="text info">
           {isArrayType ? l('enumArray') : ''}{' '}
           {values.length === 1 ? l('enumSingleValue') : l('enum')}:
-        </FieldLabel>{' '}
+        </span>{' '}
         {displayedItems.map((value, idx) => {
           const exampleValue = enumSkipQuotes ? String(value) : JSON.stringify(value);
           return (
