@@ -56,6 +56,7 @@ export class FieldModel {
   explode: boolean;
   style?: OpenAPIParameterStyle;
   const?: any;
+  path?: string;
 
   serializationMime?: string;
 
@@ -65,6 +66,7 @@ export class FieldModel {
     pointer: string,
     options: RedocNormalizedOptions,
     refsStack?: string[],
+    parentPath?: string,
   ) {
     makeObservable(this);
 
@@ -74,6 +76,8 @@ export class FieldModel {
     this.in = info.in;
     this.required = !!info.required;
 
+    this.path = `${parentPath ? parentPath + '/' : ''}${this.name}`;
+
     let fieldSchema = info.schema;
     let serializationMime = '';
     if (!fieldSchema && info.in && info.content) {
@@ -81,7 +85,15 @@ export class FieldModel {
       fieldSchema = info.content[serializationMime] && info.content[serializationMime].schema;
     }
 
-    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options, false, refsStack);
+    this.schema = new SchemaModel(
+      parser,
+      fieldSchema || {},
+      pointer,
+      options,
+      false,
+      refsStack,
+      this.path,
+    );
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;

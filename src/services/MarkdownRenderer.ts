@@ -25,7 +25,7 @@ const methodLink = {
     return src.match(/:/)?.index;
   },
   tokenizer(src) {
-    const link = /^:(method|schema):([a-zA-Z0-9]*)/;
+    const link = /^:(method|schema):([a-zA-Z0-9]*)(#[a-zA-Z\\\/_]*)?/;
     const match = link.exec(src);
     if (match) {
       return {
@@ -33,17 +33,25 @@ const methodLink = {
         raw: match[0],
         dt: this.lexer.inlineTokens(match[1].trim()),
         dd: this.lexer.inlineTokens(match[2].trim()),
+        da: match[3] ? this.lexer.inlineTokens(match[3].trim()) : undefined,
       };
     }
   },
   renderer(token) {
     // the last string in the path should be displayed
-    const displayText = this.parser.parseInline(token.dd).split('/').pop();
-    return `<a href="" data-id="markdown-link" data-url-entity="${this.parser.parseInline(
+    let displayText = this.parser.parseInline(token.dd).split('/').pop();
+
+    if (token.da) {
+      displayText = this.parser.parseInline(token.da).split('/').pop();
+    }
+
+    return `<a href="#" data-id="markdown-link" data-url-entity="${this.parser.parseInline(
       token.dt,
-    )}" data-url="${this.parser.parseInline(token.dd)}">${displayText}</a>`;
+    )}" data-url="${this.parser.parseInline(token.dd)}${
+      token.da ? this.parser.parseInline(token.da) : ''
+    }">${displayText}</a>`;
   },
-  childTokens: ['dt', 'dd'],
+  childTokens: ['dt', 'dd', 'da'],
 };
 
 marked.use({ renderer, extensions: [methodLink] });

@@ -70,6 +70,7 @@ export class SchemaModel {
   contentMediaType?: string;
   minItems?: number;
   maxItems?: number;
+  path?: string;
 
   /**
    * @param isChild if schema discriminator Child
@@ -82,10 +83,12 @@ export class SchemaModel {
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
     private refsStack: string[] = [],
+    parentPath?: string,
   ) {
     makeObservable(this);
 
     this.pointer = schemaOrRef.$ref || pointer || '';
+    this.path = parentPath;
 
     const { resolved, refsStack: newRefsStack } = parser.deref(schemaOrRef, refsStack, true);
     this.refsStack = pushRef(newRefsStack, this.pointer);
@@ -191,10 +194,24 @@ export class SchemaModel {
     }
 
     if (this.hasType('object')) {
-      this.fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
+      this.fields = buildFields(
+        parser,
+        schema,
+        this.pointer,
+        this.options,
+        this.refsStack,
+        this.path,
+      );
     } else if (this.hasType('array')) {
       if (isArray(schema.items) || isArray(schema.prefixItems)) {
-        this.fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
+        this.fields = buildFields(
+          parser,
+          schema,
+          this.pointer,
+          this.options,
+          this.refsStack,
+          this.path,
+        );
       } else if (schema.items) {
         this.items = new SchemaModel(
           parser,
@@ -203,6 +220,7 @@ export class SchemaModel {
           this.options,
           false,
           this.refsStack,
+          this.path,
         );
       }
 
@@ -260,6 +278,7 @@ export class SchemaModel {
         this.options,
         false,
         refsStack,
+        this.path,
       );
 
       return schema;
@@ -377,6 +396,7 @@ export class SchemaModel {
         this.options,
         true,
         this.refsStack.slice(0, -1),
+        this.path,
       );
       innerSchema.title = name;
       return innerSchema;
@@ -412,6 +432,7 @@ export class SchemaModel {
           this.options,
           false,
           this.refsStack,
+          this.path,
         ),
     );
     this.oneOfType = 'One of';
@@ -424,6 +445,7 @@ function buildFields(
   $ref: string,
   options: RedocNormalizedOptions,
   refsStack: string[],
+  path?: string,
 ): FieldModel[] {
   const props = schema.properties || schema.prefixItems || schema.items || {};
   const patternProps = schema.patternProperties || {};
@@ -456,6 +478,7 @@ function buildFields(
       $ref + '/properties/' + fieldName,
       options,
       refsStack,
+      path,
     );
   });
 
@@ -489,6 +512,7 @@ function buildFields(
         `${$ref}/patternProperties/${fieldName}`,
         options,
         refsStack,
+        path,
       );
     }),
   );
@@ -509,6 +533,7 @@ function buildFields(
         $ref + '/additionalProperties',
         options,
         refsStack,
+        path,
       ),
     );
   }
@@ -521,6 +546,7 @@ function buildFields(
       $ref,
       options,
       refsStack,
+      path,
     }),
   );
 
@@ -534,6 +560,7 @@ function buildAdditionalItems({
   $ref,
   options,
   refsStack,
+  path,
 }: {
   parser: OpenAPIParser;
   schema?: OpenAPISchema | OpenAPISchema[] | boolean;
@@ -541,6 +568,7 @@ function buildAdditionalItems({
   $ref: string;
   options: RedocNormalizedOptions;
   refsStack: string[];
+  path?: string;
 }) {
   if (isBoolean(schema)) {
     return schema
@@ -554,6 +582,7 @@ function buildAdditionalItems({
             `${$ref}/additionalItems`,
             options,
             refsStack,
+            path,
           ),
         ]
       : [];
@@ -572,6 +601,7 @@ function buildAdditionalItems({
             `${$ref}/additionalItems`,
             options,
             refsStack,
+            path,
           ),
       ),
     ];
@@ -588,6 +618,7 @@ function buildAdditionalItems({
         `${$ref}/additionalItems`,
         options,
         refsStack,
+        path,
       ),
     ];
   }
