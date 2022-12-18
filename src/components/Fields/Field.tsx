@@ -81,7 +81,9 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          <span className="text code">{name}</span>
+          <span className="text code" id={field.path}>
+            {name}
+          </span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </label>
         {labels}
@@ -89,7 +91,9 @@ export class Field extends React.Component<FieldProps> {
       </div>
     ) : (
       <div className={classNames(deprecated ? 'deprecated' : undefined, 'property-name-cell')}>
-        <span className="text code">{name}</span>
+        <span className="text code" id={field.path}>
+          {name}
+        </span>
         {labels}
       </div>
     );

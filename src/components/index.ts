@@ -14,6 +14,7 @@ export * from './Markdown/AdvancedMarkdown';
 export { StyledMarkdownBlock } from './Markdown/styled.elements';
 export * from './SecuritySchemes/SecuritySchemes';
 export * from './Endpoint/Endpoint';
+export * from './Endpoint/styled.elements';
 export * from './ExternalDocumentation/ExternalDocumentation';
 export * from './Fields/Extensions';
 export * from './SecurityRequirement/SecurityRequirement';
